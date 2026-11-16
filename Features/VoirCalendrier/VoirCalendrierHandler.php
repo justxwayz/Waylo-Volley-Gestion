@@ -1,5 +1,5 @@
 <?php
-// SLICE VoirCalendrier : séances du mois, avec MA réponse et le nombre de présents.
+// SLICE VoirCalendrier : séances ET événements du mois, avec MA réponse / MON inscription.
 final class VoirCalendrierHandler
 {
     public function __construct(private PDO $db) {}
@@ -11,8 +11,25 @@ final class VoirCalendrierHandler
         return $d ?: $now->modify('first day of this month')->setTime(0, 0);
     }
 
-    /** @return array<int,array<string,mixed>> */
+    /** @return array{seances:array<int,array<string,mixed>>,evenements:array<int,array<string,mixed>>} */
     public function handle(int $membreId, DateTimeImmutable $mois): array
+    {
+        return ['seances' => $this->seances($membreId, $mois), 'evenements' => $this->evenements($membreId, $mois)];
+    }
+
+    private function evenements(int $membreId, DateTimeImmutable $mois): array
+    {
+        $stmt = $this->db->prepare(
+            'SELECT e.id, e.titre, e.debut, e.fin, e.lieu, e.statut,
+                    (SELECT COUNT(*) FROM inscription_evenement i WHERE i.evenement_id = e.id) AS nb_inscrits,
+                    (SELECT COUNT(*) FROM inscription_evenement i WHERE i.evenement_id = e.id AND i.membre_id = :m) AS moi
+             FROM evenement e WHERE e.debut >= :d AND e.debut < :f ORDER BY e.debut ASC'
+        );
+        $stmt->execute([':m' => $membreId, ':d' => $mois->format('Y-m-01 00:00:00'), ':f' => $mois->modify('first day of next month')->format('Y-m-d 00:00:00')]);
+        return $stmt->fetchAll();
+    }
+
+    private function seances(int $membreId, DateTimeImmutable $mois): array
     {
         $debut = $mois->format('Y-m-01 00:00:00');
         $fin = $mois->modify('first day of next month')->format('Y-m-d 00:00:00');
