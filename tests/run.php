@@ -2,7 +2,7 @@
 // Lance tous les tests de slices : php tests/run.php
 require __DIR__ . '/bootstrap.php';
 
-foreach (glob(__DIR__ . '/../Features/*/*Test.php') as $file) {
+foreach (array_merge(glob(__DIR__ . '/../Features/*/*Test.php'), glob(__DIR__ . '/*Test.php')) as $file) {
     echo basename(dirname($file)) . ' / ' . basename($file) . "\n";
     require $file;
 }
