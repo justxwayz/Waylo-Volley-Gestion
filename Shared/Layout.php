@@ -4,17 +4,7 @@ final class Layout
 {
     public static function page(Context $c, string $titre, string $contenu): string
     {
-        $u = $c->user();
-        $nav = '';
-        if ($u) {
-            $nav .= '<a href="?p=calendrier">Calendrier</a><a href="?p=mes-presences">Mes présences</a>';
-            if ($u['role'] === 'admin') {
-                $nav .= '<a href="?p=seance/creer">Nouvelle séance</a><a href="?p=membres">Membres</a>';
-            }
-            $nav .= '<a href="?p=profil">' . Html::e($u['nom']) . '</a>'
-                  . '<form method="post" action="?p=deconnexion" class="inline">' . Html::csrfField($c->session)
-                  . '<button>Déconnexion</button></form>';
-        }
+        $nav = Menu::html($c);
         $flash = '';
         foreach ($c->session->takeFlash() as $f) {
             $flash .= '<p class="flash ' . Html::e($f['t']) . '">' . Html::e($f['m']) . '</p>';
