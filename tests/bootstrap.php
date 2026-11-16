@@ -12,6 +12,8 @@ final class TestDb
         $db->exec("CREATE TABLE membre (id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, email TEXT UNIQUE, mot_de_passe TEXT, role TEXT DEFAULT 'membre', actif INTEGER DEFAULT 1, cree_le TEXT)");
         $db->exec("CREATE TABLE seance (id INTEGER PRIMARY KEY AUTOINCREMENT, titre TEXT, debut TEXT, fin TEXT, lieu TEXT, statut TEXT DEFAULT 'prevue', cree_le TEXT)");
         $db->exec("CREATE TABLE presence (id INTEGER PRIMARY KEY AUTOINCREMENT, membre_id INTEGER, seance_id INTEGER, reponse TEXT, reponse_le TEXT, venu INTEGER NULL, UNIQUE(membre_id, seance_id))");
+        $db->exec("CREATE TABLE evenement (id INTEGER PRIMARY KEY AUTOINCREMENT, titre TEXT, description TEXT NULL, debut TEXT, fin TEXT, lieu TEXT, date_limite TEXT, statut TEXT DEFAULT 'prevu', cree_le TEXT)");
+        $db->exec('CREATE TABLE inscription_evenement (id INTEGER PRIMARY KEY AUTOINCREMENT, membre_id INTEGER, evenement_id INTEGER, inscrit_le TEXT, UNIQUE(membre_id, evenement_id))');
         $db->exec('CREATE TABLE tentative_connexion (email TEXT PRIMARY KEY, echecs INTEGER DEFAULT 0, niveau INTEGER DEFAULT 0, bloque_jusqu TEXT NULL, maj_le TEXT)');
         return $db;
     }
@@ -29,6 +31,14 @@ final class TestDb
         $fin = (new DateTimeImmutable($debut))->modify('+2 hours')->format('Y-m-d H:i:s');
         $db->prepare('INSERT INTO seance (titre,debut,fin,lieu,statut,cree_le) VALUES (?,?,?,?,?,?)')
            ->execute([$titre, $debut, $fin, 'Gymnase', $statut, '2026-01-01 00:00:00']);
+        return (int)$db->lastInsertId();
+    }
+
+    public static function evenement(PDO $db, string $debut, string $limite, string $statut = 'prevu', string $titre = 'Tournoi'): int
+    {
+        $fin = (new DateTimeImmutable($debut))->modify('+4 hours')->format('Y-m-d H:i:s');
+        $db->prepare('INSERT INTO evenement (titre,description,debut,fin,lieu,date_limite,statut,cree_le) VALUES (?,?,?,?,?,?,?,?)')
+           ->execute([$titre, 'desc', $debut, $fin, 'Salle', $limite, $statut, '2026-01-01 00:00:00']);
         return (int)$db->lastInsertId();
     }
 

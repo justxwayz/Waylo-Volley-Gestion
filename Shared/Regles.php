@@ -14,6 +14,14 @@ final class Regles
         return $now < $limite;
     }
 
+    /** Inscription possible : événement prévu, avant la date limite (et avant le début). */
+    public static function inscriptionOuverte(array $evenement, DateTimeImmutable $now): bool
+    {
+        return $evenement['statut'] === 'prevu'
+            && $now < new DateTimeImmutable($evenement['date_limite'])
+            && $now < new DateTimeImmutable($evenement['debut']);
+    }
+
     public static function libelleReponse(?string $r): string
     {
         return match ($r) {
