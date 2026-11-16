@@ -16,13 +16,13 @@ final class VoirListeParticipantsHandler
         $r = $this->db->prepare(
             'SELECT m.id, m.nom, p.reponse, p.reponse_le
              FROM presence p JOIN membre m ON m.id = p.membre_id
-             WHERE p.seance_id = :s ORDER BY m.nom ASC'
+             WHERE p.seance_id = :s AND p.reponse IS NOT NULL ORDER BY m.nom ASC'
         );
         $r->execute([':s' => $seanceId]);
 
         $n = $this->db->prepare(
             'SELECT m.id, m.nom FROM membre m
-             WHERE m.actif = 1 AND m.id NOT IN (SELECT membre_id FROM presence WHERE seance_id = :s)
+             WHERE m.actif = 1 AND m.id NOT IN (SELECT membre_id FROM presence WHERE seance_id = :s AND reponse IS NOT NULL)
              ORDER BY m.nom ASC'
         );
         $n->execute([':s' => $seanceId]);
