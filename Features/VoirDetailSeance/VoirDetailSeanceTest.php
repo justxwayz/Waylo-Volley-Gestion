@@ -22,3 +22,7 @@ T::check(str_contains(Router::dispatch($ctxA, 'seance')->body, 'Administration')
 $db->exec("INSERT INTO presence (membre_id,seance_id,reponse,reponse_le,venu) VALUES (99,$s,NULL,NULL,1)");
 $d2 = $h->handle($s, $alice, new DateTimeImmutable('2026-03-10 12:00:00'));
 T::check(array_keys($d2['compteurs']) === ['present', 'absent', 'peut_etre'], 'une ligne de pointage sans réponse n\'est pas comptée');
+
+$coachHtml = Router::dispatch(TestDb::ctx($db, ['id' => 77, 'nom' => 'Coach', 'role' => 'coach'], get: ['id' => $s]), 'seance')->body;
+T::check(str_contains($coachHtml, 'export/presences&seance=' . $s), 'coach : lien d\'export CSV de la séance');
+T::check(!str_contains($html, 'export/presences'), 'membre : pas de lien d\'export');
