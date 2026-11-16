@@ -17,7 +17,7 @@ final class VoirDetailSeanceHandler
         $m->execute([':s' => $seanceId, ':m' => $membreId]);
         $ma = $m->fetchColumn();
 
-        $c = $this->db->prepare('SELECT reponse, COUNT(*) AS n FROM presence WHERE seance_id = :s GROUP BY reponse');
+        $c = $this->db->prepare('SELECT reponse, COUNT(*) AS n FROM presence WHERE seance_id = :s AND reponse IS NOT NULL GROUP BY reponse');
         $c->execute([':s' => $seanceId]);
         $compteurs = ['present' => 0, 'absent' => 0, 'peut_etre' => 0];
         foreach ($c->fetchAll() as $row) {

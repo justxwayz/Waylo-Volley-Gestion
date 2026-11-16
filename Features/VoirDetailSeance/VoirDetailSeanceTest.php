@@ -18,3 +18,7 @@ $html = Router::dispatch($ctx, 'seance')->body;
 T::check(str_contains($html, 'Je viens') && !str_contains($html, 'Administration'), 'membre : boutons de réponse, pas de bloc admin');
 $ctxA = TestDb::ctx($db, ['id' => 99, 'nom' => 'Admin', 'role' => 'admin'], get: ['id' => $s]);
 T::check(str_contains(Router::dispatch($ctxA, 'seance')->body, 'Administration'), 'admin : bloc administration visible');
+
+$db->exec("INSERT INTO presence (membre_id,seance_id,reponse,reponse_le,venu) VALUES (99,$s,NULL,NULL,1)");
+$d2 = $h->handle($s, $alice, new DateTimeImmutable('2026-03-10 12:00:00'));
+T::check(array_keys($d2['compteurs']) === ['present', 'absent', 'peut_etre'], 'une ligne de pointage sans réponse n\'est pas comptée');
