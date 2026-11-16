@@ -27,7 +27,8 @@ final class VoirDetailSeanceView
         if (Roles::atteint($role, 'coach')) {
             $html .= '<div class="card"><h2>' . ($role === 'admin' ? 'Administration' : 'Coach') . '</h2><p>'
                    . '<a class="btn" href="?p=seance/participants&id=' . $id . '">Participants</a> '
-                   . '<a class="btn" href="?p=seance/pointage&id=' . $id . '">Pointage</a> ';
+                   . '<a class="btn" href="?p=seance/pointage&id=' . $id . '">Pointage</a> '
+                   . '<a class="btn" href="?p=export/presences&seance=' . $id . '">Exporter (CSV)</a> ';
             if (Roles::atteint($role, 'admin')) {
                 $html .= '<a class="btn" href="?p=seance/modifier&id=' . $id . '">Modifier</a> ';
                 if ($s['statut'] === 'prevue') {
