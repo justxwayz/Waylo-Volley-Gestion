@@ -27,8 +27,8 @@ final class Router
         if ($def['role'] !== 'public' && !$u) {
             return Response::redirect('?p=connexion');
         }
-        if ($def['role'] === 'admin' && $u['role'] !== 'admin') {
-            return Response::html(Layout::page($c, 'Accès refusé', '<p>Réservé aux administrateurs.</p>'), 403);
+        if (!Roles::atteint($u['role'] ?? null, $def['role'])) {
+            return Response::html(Layout::page($c, 'Accès refusé', '<p>Vous n\'avez pas les droits nécessaires pour cette page.</p>'), 403);
         }
         if ($c->isPost() && !$c->session->checkCsrf($c->post['csrf'] ?? null)) {
             return Response::html(Layout::page($c, 'Requête invalide', '<p>Jeton de sécurité invalide, rechargez la page.</p>'), 400);
