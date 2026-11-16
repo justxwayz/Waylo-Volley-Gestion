@@ -12,6 +12,7 @@ final class TestDb
         $db->exec("CREATE TABLE membre (id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, email TEXT UNIQUE, mot_de_passe TEXT, role TEXT DEFAULT 'membre', actif INTEGER DEFAULT 1, cree_le TEXT)");
         $db->exec("CREATE TABLE seance (id INTEGER PRIMARY KEY AUTOINCREMENT, titre TEXT, debut TEXT, fin TEXT, lieu TEXT, statut TEXT DEFAULT 'prevue', cree_le TEXT)");
         $db->exec("CREATE TABLE presence (id INTEGER PRIMARY KEY AUTOINCREMENT, membre_id INTEGER, seance_id INTEGER, reponse TEXT, reponse_le TEXT, venu INTEGER NULL, UNIQUE(membre_id, seance_id))");
+        $db->exec('CREATE TABLE tentative_connexion (email TEXT PRIMARY KEY, echecs INTEGER DEFAULT 0, niveau INTEGER DEFAULT 0, bloque_jusqu TEXT NULL, maj_le TEXT)');
         return $db;
     }
 
