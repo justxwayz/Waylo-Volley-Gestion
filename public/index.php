@@ -1,23 +1,18 @@
 <?php
 // Front controller : aucune logique métier, il aiguille vers la slice demandée.
+// Toute erreur (base indisponible, SQL, bug) est transformée en page lisible ; le détail va dans le journal du serveur.
 require __DIR__ . '/../Shared/autoload.php';
 
 try {
-    $db = Database::fromEnv();
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo 'Base de données indisponible.';
-    exit;
+    $ctx = new Context(
+        Database::fromEnv(),
+        Session::native(),
+        new DateTimeImmutable('now'),
+        $_GET,
+        $_POST,
+        $_SERVER['REQUEST_METHOD'] ?? 'GET'
+    );
+    Router::dispatch($ctx, (string)($_GET['p'] ?? 'calendrier'))->send();
+} catch (Throwable $e) {
+    PageErreur::envoyer($e);
 }
-
-$ctx = new Context(
-    $db,
-    Session::native(),
-    new DateTimeImmutable('now'),
-    $_GET,
-    $_POST,
-    $_SERVER['REQUEST_METHOD'] ?? 'GET'
-);
-
-$path = $_GET['p'] ?? 'calendrier';
-Router::dispatch($ctx, $path)->send();
