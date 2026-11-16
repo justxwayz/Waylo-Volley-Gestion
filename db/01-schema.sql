@@ -33,3 +33,12 @@ CREATE TABLE presence (
   FOREIGN KEY (membre_id) REFERENCES membre(id),
   FOREIGN KEY (seance_id) REFERENCES seance(id)
 ) ENGINE=InnoDB;
+
+-- Limitation des tentatives de connexion (par email, y compris pour les emails inconnus)
+CREATE TABLE tentative_connexion (
+  email VARCHAR(150) NOT NULL PRIMARY KEY,
+  echecs INT NOT NULL DEFAULT 0,
+  niveau INT NOT NULL DEFAULT 0,
+  bloque_jusqu DATETIME NULL,
+  maj_le DATETIME NOT NULL
+) ENGINE=InnoDB;
