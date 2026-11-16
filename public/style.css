@@ -15,3 +15,17 @@ form.inline { display:inline; } label { display:block; margin:.6rem 0 .2rem; col
 table { width:100%; border-collapse:collapse; } th, td { text-align:left; padding:.5rem; border-bottom:1px solid #2c3750; }
 .tag { padding:.1rem .5rem; border-radius:99px; font-size:.8rem; background:#33405a; } .tag.present { background:var(--ok); color:#04170d; } .tag.absent { background:var(--ko); } .tag.annulee { background:#6b4a1f; }
 .muted { color:var(--muted); }
+
+/* Calendrier en grille (grand écran) / liste (petit écran) */
+main:has(.cal-grille) { max-width: 1100px; }
+.cal-grille { display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:4px; }
+.cal-entete { text-align:center; color:var(--muted); font-size:.85rem; padding:.3rem 0; }
+.cal-case { background:var(--card); border-radius:8px; min-height:92px; padding:4px; display:flex; flex-direction:column; gap:3px; overflow:hidden; }
+.cal-case.vide { background:transparent; } .cal-case.aujourdhui { outline:2px solid var(--accent); }
+.cal-num { font-size:.8rem; color:var(--muted); }
+.chip { display:block; font-size:.75rem; padding:2px 5px; border-radius:5px; background:#33405a; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-decoration:none; }
+.chip.present { background:var(--ok); color:#04170d; } .chip.absent { background:var(--ko); color:#fff; } .chip.peut_etre { background:#e0a82e; color:#201600; }
+.chip.annulee { text-decoration:line-through; opacity:.6; } .chip.evt { background:#2b6cb0; color:#fff; }
+.tag.evt { background:#2b6cb0; color:#fff; } .tag.peut_etre { background:#e0a82e; color:#201600; }
+.cal-liste { display:none; }
+@media (max-width: 760px) { .cal-grille, .cal-legende { display:none; } .cal-liste { display:block; } }
