@@ -8,7 +8,7 @@ $db->exec("INSERT INTO presence (membre_id,seance_id,reponse,reponse_le) VALUES 
 $u = ['id' => $admin, 'nom' => 'Admin', 'role' => 'admin'];
 
 $routes = Router::routes();
-T::check(count($routes) === 16, 'les 16 routes des slices sont découvertes (trouvé : ' . count($routes) . ')');
+T::check(count($routes) === 17, 'les 17 routes des slices sont découvertes (trouvé : ' . count($routes) . ')');
 
 foreach (array_keys($routes) as $path) {
     $ctx = TestDb::ctx($db, $u, '2026-03-10 12:00:00', [], ['id' => $s, 'm' => '2026-03']);
