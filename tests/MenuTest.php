@@ -13,7 +13,7 @@ T::check(!in_array('Membres', $m) && !in_array('Nouvelle séance', $m), 'membre 
 $a = $libelles($admin);
 T::check(in_array('Membres', $a) && in_array('Nouvelle séance', $a) && in_array('Séances récurrentes', $a) && in_array('Calendrier', $a), 'admin : voit tout (hérite membre + coach)');
 T::check(!in_array('Membres', $libelles($coach)), 'coach : pas les entrées admin');
-T::check(array_slice($a, 0, 2) === ['Calendrier', 'Mes présences'] && end($a) === 'Admin', 'ordre respecté (profil en dernier)');
+T::check($a[0] === 'Calendrier' && array_search('Événements', $a) < array_search('Mes présences', $a) && end($a) === 'Admin', 'ordre respecté (Calendrier d\'abord, profil en dernier)');
 
 // entrées de test injectées : filtrage par rôle et tri
 $faux = [
