@@ -10,6 +10,7 @@ services:
       - DB_USER=${DB_USER:-root}
       - DB_PASSWORD=${DB_PASSWORD:-secret}
       - DB_PORT=3306
+      - APP_DEBUG=${APP_DEBUG:-0}
     volumes:
       - ./:/var/www/html
     depends_on:
