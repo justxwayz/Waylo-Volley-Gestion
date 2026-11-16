@@ -7,6 +7,7 @@ final class Session
     public static function native(): self
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax']);
             session_start();
         }
         return new self($_SESSION);

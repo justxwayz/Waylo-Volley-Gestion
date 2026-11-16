@@ -11,6 +11,8 @@ final class Database
         return new PDO($dsn, getenv('DB_USER'), getenv('DB_PASSWORD'), [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            // rowCount() d'un UPDATE = lignes trouvées (et non modifiées) : indispensable pour les "update puis insert"
+            PDO::MYSQL_ATTR_FOUND_ROWS => true,
         ]);
     }
 }
