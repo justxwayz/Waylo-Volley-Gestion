@@ -1,7 +1,7 @@
 <?php
 return [
     'seance/participants' => [
-        'role' => 'admin',
+        'role' => 'coach',
         'run' => function (Context $c): Response {
             $d = (new VoirListeParticipantsHandler($c->db))->handle((int)($c->get['id'] ?? 0));
             if (!$d) {

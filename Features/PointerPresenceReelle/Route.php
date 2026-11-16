@@ -1,7 +1,7 @@
 <?php
 return [
     'seance/pointage' => [
-        'role' => 'admin',
+        'role' => 'coach',
         'run' => function (Context $c): Response {
             $h = new PointerPresenceReelleHandler($c->db);
             $id = (int)($c->get['id'] ?? 0);
