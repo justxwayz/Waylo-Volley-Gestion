@@ -15,7 +15,7 @@ final class AjouterMembreHandler
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return self::ko('Email invalide.');
         }
-        if (!in_array($role, ['membre', 'admin'], true)) {
+        if (!in_array($role, Roles::valides(), true)) {
             return self::ko('Rôle invalide.');
         }
         if ($motDePasse !== '' && strlen($motDePasse) < 8) {

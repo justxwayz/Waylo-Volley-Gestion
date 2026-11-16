@@ -6,7 +6,7 @@ CREATE TABLE membre (
   nom VARCHAR(100) NOT NULL,
   email VARCHAR(150) NOT NULL UNIQUE,
   mot_de_passe VARCHAR(255) NOT NULL,
-  role ENUM('membre','admin') NOT NULL DEFAULT 'membre',
+  role ENUM('membre','coach','admin') NOT NULL DEFAULT 'membre',
   actif TINYINT(1) NOT NULL DEFAULT 1,
   cree_le DATETIME NOT NULL
 ) ENGINE=InnoDB;

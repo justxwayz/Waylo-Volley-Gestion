@@ -23,14 +23,17 @@ final class VoirDetailSeanceView
         }
         $html .= '</div>';
 
-        if ($c->user()['role'] === 'admin') {
-            $html .= '<div class="card"><h2>Administration</h2><p>'
+        $role = $c->user()['role'];
+        if (Roles::atteint($role, 'coach')) {
+            $html .= '<div class="card"><h2>' . ($role === 'admin' ? 'Administration' : 'Coach') . '</h2><p>'
                    . '<a class="btn" href="?p=seance/participants&id=' . $id . '">Participants</a> '
-                   . '<a class="btn" href="?p=seance/pointage&id=' . $id . '">Pointage</a> '
-                   . '<a class="btn" href="?p=seance/modifier&id=' . $id . '">Modifier</a> ';
-            if ($s['statut'] === 'prevue') {
-                $html .= '<form method="post" action="?p=seance/annuler&id=' . $id . '" class="inline">' . Html::csrfField($c->session)
-                       . '<button class="ko">Annuler la séance</button></form>';
+                   . '<a class="btn" href="?p=seance/pointage&id=' . $id . '">Pointage</a> ';
+            if (Roles::atteint($role, 'admin')) {
+                $html .= '<a class="btn" href="?p=seance/modifier&id=' . $id . '">Modifier</a> ';
+                if ($s['statut'] === 'prevue') {
+                    $html .= '<form method="post" action="?p=seance/annuler&id=' . $id . '" class="inline">' . Html::csrfField($c->session)
+                           . '<button class="ko">Annuler la séance</button></form>';
+                }
             }
             $html .= '</p></div>';
         }
