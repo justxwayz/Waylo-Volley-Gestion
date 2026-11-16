@@ -2,6 +2,7 @@
 return [
     'profil' => [
         'role' => 'membre',
+        'menu' => ['label' => ':nom', 'ordre' => 90],
         'run' => function (Context $c): Response {
             $h = new ModifierMonProfilHandler($c->db);
             $id = $c->user()['id'];

@@ -2,6 +2,7 @@
 return [
     'seance/recurrente' => [
         'role' => 'admin',
+        'menu' => ['label' => 'Séances récurrentes', 'ordre' => 31],
         'run' => function (Context $c): Response {
             if (!$c->isPost()) {
                 return Response::html(Layout::page($c, 'Séances récurrentes', CreerSeanceRecurrenteView::form($c)));

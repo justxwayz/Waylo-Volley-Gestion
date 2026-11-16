@@ -2,6 +2,7 @@
 return [
     'seance/creer' => [
         'role' => 'admin',
+        'menu' => ['label' => 'Nouvelle séance', 'ordre' => 30],
         'run' => function (Context $c): Response {
             if (!$c->isPost()) {
                 return Response::html(Layout::page($c, 'Nouvelle séance', CreerSeanceView::form($c)));
