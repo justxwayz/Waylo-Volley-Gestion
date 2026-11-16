@@ -18,7 +18,9 @@ final class ListerMembresView
             $html .= '<tr><td>' . Html::e($m['nom']) . '</td><td>' . Html::e($m['email']) . '</td><td>' . Html::e($m['role']) . '</td>'
                    . '<td>' . ($actif ? 'Actif' : '<span class="tag annulee">Désactivé</span>') . '</td><td>'
                    . '<form method="post" action="?p=membre/' . $action . '&id=' . (int)$m['id'] . '" class="inline">' . Html::csrfField($c->session)
-                   . '<button class="' . ($actif ? 'ko' : 'sec') . '">' . $label . '</button></form></td></tr>';
+                   . '<button class="' . ($actif ? 'ko' : 'sec') . '">' . $label . '</button></form> '
+                   . '<form method="post" action="?p=membre/reinitialiser&id=' . (int)$m['id'] . '" class="inline" onsubmit="return confirm(\'Réinitialiser le mot de passe ?\')">' . Html::csrfField($c->session)
+                   . '<button class="sec">Réinitialiser le mot de passe</button></form></td></tr>';
         }
         return $html . '</table>';
     }
